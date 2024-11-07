@@ -1,9 +1,11 @@
 # Repositorio para el proyecto de IWG-101 Introducción a la Ingeniería UTFSM del año 2021-2
 
 ## Autores ✒️
-Pablo Retamales [Perfil GitHub](https://github.com/doorkaz)
-Sebastián Navarro [Perfil GitHub](https://github.com/Sebastar637)
-Bryan Olivares [Perfil GitHub](https://github.com/Yxngfrost)
+* Pablo Retamales [Perfil GitHub](https://github.com/doorkaz)
+
+* Sebastián Navarro [Perfil GitHub](https://github.com/Sebastar637)
+
+* Bryan Olivares [Perfil GitHub](https://github.com/Yxngfrost)
 
 ## Instalación 🔧
 ### Crear el entorno virtual:
