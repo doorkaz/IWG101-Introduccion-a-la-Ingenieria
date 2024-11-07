@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Posts{% endblock title %}
+
+
+{% block content %}
+
+
+{% if user.is_authenticated %}
+
+
+<h1 class="text-center m-5 title-user animation-title">Bienvenido {{ user.username }}</h1>
+
+{% endif %}
+
+<div class="row post-margin">
+    {% if user.is_authenticated %}
+            <div class="col-md-3 author-panel gx-5 perfil-user">
+                <img class="avatar rounded card-img-top" src="{{user.avatar.url}}" alt="avatar">
+
+
+                <h3><p style="font-family: 'Merriweather', serif;">{{user.username}}</p></h3>
+                <div> 
+
+                    <p style="font-family: 'Merriweather', serif;"><i class="fas fa-user"></i> Sobre Mí: {{user.bio}}</p>
+                    {% if user.discord %}
+                    <p style="font-family: 'Merriweather', serif;"><i class="fab fa-discord"></i> Discord: {{user.discord}}</p>
+                    {% endif %}
+                    <p style="font-family: 'Merriweather', serif;"><a href="{% url 'createroom' %}" class="btn btn-success btn-lg btn-block create-post"><i class="fas fa-plus-square"></i> Crear Post</a></p>
+                </div>
+
+            </div>
+       {% endif %}
+    
+                
+     <div class="gx-5 {% if user.is_authenticated %}col-md-9{% else %}col-md-12{% endif %}"  >
+                        
+        {% if rooms %}
+        <div class="row g-2 g-5">
+            {% for room in rooms %}
+            <div class="col-md-3">
+                <div class="card-body publication-title">
+                    <h5 class="card-title text-center"><p style="font-family: 'Merriweather', serif;">{{room.name}}</h5>
+                    <img src="{{ room.image.url }}" class="card-img-top">
+
+                    <div class="preview">
+
+                        <p class="text-center" style="font-family: 'Merriweather', serif;">{{room.description|truncatechars:60|truncatewords:20}}
+                            <p><i class="fas fa-clock"></i> Creado el <b>{{ room.timestamp|date:"d/H/y" }}</b> a las <b>{{ room.timestamp|date:"H:i" }}</b></p>
+                        <p><i class="fas fa-user"></i> Por <img width="25px" height="25px" class="rounded-circle" src="{{ room.user.avatar.url }}"> {{ room.user.username }}</p>
+                    </div>
+                    <p style="font-family: 'Merriweather', serif;"><a href="{% url 'room' room_id=room.id %}" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="subforum-title mt-3">
+
+            <div class="alert alert-secondary" role="alert">
+                Aún no hay posts publicados
+            </div>
+
+        </div>
+        {% endif %}
+        </div>
+</div>
+    
+
+
+      
+
+</div>
+
+
+
+
+
+
+
+
+{% endblock content %}

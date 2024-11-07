@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block title %}{{room_name}}{% endblock title %}
+
+{% block content %}
+
+    <h1><p style="font-family: 'Permanent Marker', cursive;">{{ room.name }}</h1>
+    
+    
+    <div class="alert alert-primary" role="alert">
+        <i class="fas fa-info-circle"></i> Descripción: {{ room.description }}<br>
+        {% if room.tags.all %}
+
+            <i class="fas fa-tags"></i> <span>Etiquetas: </span>
+            {% for tag in room.tags.all %}  
+                
+                <span class="badge rounded-pill bg-primary">{{ tag }}</span>
+
+            {% endfor %}
+
+        {% endif %}
+    </div>
+    
+    <div class="row">
+        <div class="col-md-9">
+            <div id="chat-text">
+                {% for chat in chats.all %}
+                <li class="list-group-item"><span class="username">
+                    {{ chat.timestamp|date:"m/d | H:i" }}
+                    <img width="25px" height="25px"  class="rounded-circle" src="{{ chat.user.avatar.url }}"> 
+                    <a target="__blank" href="{% url 'profile' profile_id=chat.user.id %}" class="text-decoration-none text-dark"> {{ chat.user.username }}</a>
+                    :</span> {{ chat.content }}</li>
+                {% endfor %}
+            </div>
+
+                    
+            {% if user.is_authenticated %}
+            <label for="">Mensaje:</label>
+            <textarea class="form-control" type="text" size="80" id="input"></textarea><br>
+            <input style="width:100px" class="form-control btn btn-primary" type="button" value="Enviar" id="submit">
+
+            <button class="from-control btn btn-warning" onclick="scrollToBottom()">Ver ultimo mensaje</button>
+            
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if connected_users %}
+
+            <h4>Usuarios conectados</h2>
+            <ul class="list-group">
+                {% for user in connected_users %}
+                <li class="list-group-item">
+                    <img width="25px" height="25px"  class="rounded-circle" src="{{ user.avatar.url }}"> 
+                    <a target="__blank" href="{% url 'profile' profile_id=user.id %}" class="text-decoration-none text-dark">{{ user.username }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h4>No hay usuarios conectados</h2>
+
+            {% endif %}
+
+        </div>
+    </div>
+    
+
+    {{ room_id|json_script:"room_id" }}
+
+    {{ request.user.username|json_script:"user_username" }}
+
+    {{ request.user.avatar.url|json_script:"avatar" }}
+
+    <script>
+
+        const userName = JSON.parse(document.getElementById('user_username').textContent); //Obtengo valor desde script generado en django en la linea 39
+        const roomId = JSON.parse(document.getElementById('room_id').textContent); //Obtengo valor desde script generado en django en la linea 41
+        const avatar = JSON.parse(document.getElementById('avatar').textContent) //Obtengo valor desde script generado en django en la linea 43
+
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomId}/`); //Instancia de ws basado en el parametro llamado room_id creado en el archivo chat/urls.poy
+
+        function scrollToBottom() {
+            var chat = document.getElementById("chat-text");
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        //Evento para canalizar y enviar datos a traves del boton
+        document.getElementById('submit').onclick = (e) => {
+            const messageFromInputElementDom = document.getElementById('input'); //Obtener elemento input del dom para manipular y extraer el valor ingresado
+            
+            if (messageFromInputElementDom.value == '') return
+            
+            const message = messageFromInputElementDom.value; //Se obtiene el valor ingresado al input
+            chatSocket.send(JSON.stringify({  //Se envia el objeto json con la informacion recuperada previamente
+                'message': message,
+                'username': userName,
+                'avatar': avatar,
+            }))
+            messageFromInputElementDom.value = ''; //Se limpia el valor del input para que puedan volver a ingresar
+
+            scrollToBottom()
+        };
+
+        //Evento para capturar datos del websocket
+        chatSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data); //Se recupera informacion enviada por el socket
+            
+            var time = new Date();
+
+            formatedTime = 
+                (time.getMonth() + 1)   + "/" + 
+                (time.getDate()) + " | " + 
+                ("0" + time.getHours()).slice(-2)   + ":" + 
+                ("0" + time.getMinutes()).slice(-2)
+            
+            document.getElementById('chat-text').innerHTML += `
+            <li class="list-group-item">
+                <b>${formatedTime}</b>
+                <img width="25px" height="25px"  class="rounded-circle" src="${data.avatar}"> 
+                <b>${data.username} :</b> ${data.message}
+            </li>`; //Se incorpora data recuperada al elemento div
+
+            scrollToBottom()
+        }
+    </script>
+
+{% endblock content %}
+ 

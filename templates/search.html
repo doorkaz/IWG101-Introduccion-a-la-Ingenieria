@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <!--Navigation-->
+        <div class="navigate">
+            <h1><p style="font-family: 'Zen Antique Soft', serif;">Resultados de busqueda: {{query}}</h1>
+
+            <div class="alert alert-secondary" role="alert">
+                <p style="font-family: 'Cinzel', serif;">Resultados encontrados: <b>{{results|length}}</b>
+            </div>
+
+        </div>            
+
+
+    
+        {% if results %}
+        <div class="row g-2 g-5 post-margin">
+            {% for room in results %}
+            <div class="col-md-3">
+                <div class="card-body publication-title">
+                    <h5 class="card-title text-center"><p style="font-family: 'Merriweather', serif;">{{room.name}}</h5>
+                    <img src="{{ room.image.url }}" class="card-img-top">
+
+                    <div class="preview">
+                        <p class="text-center" style="font-family: 'Merriweather', serif;">{{room.description|truncatechars:60|truncatewords:20}}
+                            <p><i class="fas fa-clock"></i> Creado el <b>{{ room.timestamp|date:"d/H/y" }}</b> a las <b>{{ room.timestamp|date:"H:i" }}</b></p>
+                            <p><i class="fas fa-user"></i> Por <img width="25px" height="25px" class="rounded-circle" src="{{ room.user.avatar.url }}"> {{ room.user.username }}</p>
+                    </div>
+                    <p style="font-family: 'Merriweather', serif;"><a href="{% url 'room' room_id=room.id %}" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+    </div>
+
+    {% endblock content %}

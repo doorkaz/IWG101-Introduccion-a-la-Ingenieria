@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hello World</title>
+</head>
+<body class="bg-red-500">
+    {% if user.is_authenticated %}
+    Bienvenido {{ user.username }} - <a class="sign-out" href="{% url 'account_logout' %}">Cerrar sesion</a>
+    {% else %}
+        <a class="sign-in" href="{% url 'account_login' %}">Inicia session </a>o <a class="sign-in" href="{% url 'account_signup' %}">Registrate para interactual</a>
+    {% endif %}<br>
+    {{ room.name }}<br>
+    {{ room.description }}<br>
+    <div id="chat-text">
+        {% for chat in chats.all %}
+            <p>{{ chat.user.username }}: {{ chat.content }}</p>
+        {% endfor %}
+    </div><br>
+    {% if user.is_authenticated %}
+    <input type="text" size="80" id="input"><br>
+    <input type="button" value="Enviar" id="submit">
+    {% endif %}
+
+    {{ room_name|json_script:"room-name" }}
+
+    {{ request.user.username|json_script:"user_username" }}
+    <script>
+
+        const userName = JSON.parse(document.getElementById('user_username').textContent); //Obtengo valor desde script generado en django en la linea 20
+        const roomName = JSON.parse(document.getElementById('room-name').textContent); //Obtengo valor desde script generado en django en la linea 18
+        const chatSocket = new WebSocket(`ws://${window.location.host}/ws/chat/${roomName}/`); //Instancia de ws basado en el parametro llamado room_name creado en el archivo chat/urls.poy
+
+        //Evento para canalizar y enviar datos a traves del boton
+        document.getElementById('submit').onclick = (e) => {
+            const messageFromInputElementDom = document.getElementById('input'); //Obtener elemento input del dom para manipular y extraer el valor ingresado
+            const message = messageFromInputElementDom.value; //Se obtiene el valor ingresado al input
+            chatSocket.send(JSON.stringify({  //Se envia el objeto json con la informacion recuperada previamente
+                'message': message,
+                'username': userName,
+            }))
+            messageFromInputElementDom.value = ''; //Se limpia el valor del input para que puedan volver a ingresar
+        };
+
+        //Evento para capturar datos del websocket
+        chatSocket.onmessage = (e) => {
+            const data = JSON.parse(e.data); //Se recupera informacion enviada por el socket
+            document.getElementById('chat-text').innerHTML += data.username + ': ' + data.message + '</br>'; //Se incorpora data recuperada al elemento div
+        }
+    </script>
+</body>
+</html>

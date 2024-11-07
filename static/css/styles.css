@@ -1,0 +1,147 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+html{
+    height: 100%;
+}
+
+#chat-text {
+    background-color: #ffffff82;
+    height: 400px; 
+    overflow: scroll;
+}
+#chat-text .username{
+    font-weight: bold;
+}
+
+.connected{
+    height: 15px;
+    width: 15px;
+    background-color: rgb(0, 255, 13);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.disconnected{
+    height: 15px;
+    width: 15px;
+    background-color: rgb(255, 0, 0);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.lead p{
+    font-family: 'Merriweather', serif!important;
+}
+
+.lead p b{
+    font-weight: bold;
+}
+
+.preview p{
+    word-break: break-all;
+}
+
+.card-body {
+    border: 2px solid rgb(0, 0, 0);
+    border-radius:5px;
+    background-color: #ffffff75;
+    width: 100%;
+    max-height: 600px;
+    overflow: hidden;
+}
+
+.card-body p{
+    word-break: break-all;
+}
+
+.card-img-top {
+    object-fit: cover;
+    max-height: 300px;
+}
+
+.author-panel{
+    background: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+}
+.card-body .btn {
+    width: 100%;
+}
+
+.option-margin{
+    margin-right: 10px;
+}
+.search-type,.search-type:active,.search-type:focus{
+    width: 100px;
+    background: #871919;
+    border: white;
+    color: white;
+}
+.title{
+    margin-top: 15px;
+    font-family: 'Black Ops One', cursive;
+    background: linear-gradient(rgba(99, 124, 248, 0.801),rgba(40, 84, 150, 0.76),rgba(30, 15, 167, 0.719));
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 3px 3px rgba(31, 31, 31, 0.171);
+}
+.button-to-center{
+    text-align: center;
+    margin-top: 30px;
+}
+.background-img{
+    background: url("../img/background-1.jpg");
+    width: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: auto;
+    background-position: center;
+    background-color: #accfed;
+}
+.title-user{ 
+    margin-top: 15px;
+    font-family: 'Black Ops One', cursive;
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 3px 3px rgba(31, 31, 31, 0.171);
+}
+.publication-title{
+    display: inline-block;
+    margin: 5 5.5rem;
+
+    animation: slideInUp; 
+    animation-duration: 2s;
+}
+.perfil-user{
+    display: inline-block;
+    margin: 5 5.5rem;
+    height: 500px;
+    animation: slideInUp; 
+    animation-duration: 2s;
+}
+.animation-title{
+    text-align: center;
+    margin-top: 15px;
+
+    animation: zoomIn; 
+    animation-duration: 2s;
+}
+.form-background{
+    margin-top: 80px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+}
+.type-letter{
+    font-family: 'Zen Antique Soft', serif;
+}
+
+.post-margin{
+    margin-top: 20px;
+}

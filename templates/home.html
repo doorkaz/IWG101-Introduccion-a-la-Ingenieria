@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4 text-center title">Lobster</h1>
+
+    <div class="lead">
+      <p>
+        Lobster es una aplicación web dirigida a cualquier persona que le gusten
+        los <b>videojuegos</b> y que busque jugar con alguien o hablar sobre su juego
+        favorito, glitches, speedrun, trucos, etc, por lo cual a través de esta
+        página web podrás ver distintos tipos de anuncios relacionados a
+        videojuegos y si te interesa alguno podrás establecer comunicación
+        directa mediante un chat con la persona que creó ese anuncio y varios
+        más, solamente en un click.
+      </p>
+      <p>
+        El objetivo principal de Lobster es mejorar la salud mental de las
+        personas creando un espacio agradable en donde los fans por los
+        videojuegos puedan interactuar con todo tipo de gente y a la vez
+        hacerlos sentir más acompañados, sanos y cómodos.
+      </p>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="button-to-center">
+      <a class="btn btn-danger btn-lg" href="{% url 'account_logout' %}"
+        >Salir</a
+      >
+      <a class="btn btn-warning btn-lg" href="{% url 'index' %}">Ver posts</a>
+    </div>
+
+    {% else %}
+    <div class="button-to-center">
+      <a class="btn btn-success" href="{% url 'account_login' %}">Ingresar</a>
+      <a class="btn btn-primary" href="{% url 'account_signup' %}"
+        >Registrarse</a
+      >
+    </div>
+
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

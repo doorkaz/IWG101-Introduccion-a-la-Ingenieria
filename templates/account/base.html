@@ -1,0 +1,12 @@
+
+{% extends "../base.html" %}
+
+{% block title %}
+  {% block head_title %}{% endblock %}
+{% endblock title %}
+
+{% block extra_navbar %}
+<li class="nav-item">
+  <a href="{% url 'createroom' %}" class="nav-link" ><i class="fas fa-plus-square"></i> Crear Post</a></li>
+</li>
+{% endblock extra_navbar %}

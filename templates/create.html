@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Crear Post{% endblock title %}
+
+
+{% block content %}
+
+<h1><p style="font-family: 'Zen Antique Soft', serif;">Crear Post</h1>
+
+<form method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}    
+    {{form|crispy}}
+    <input class="btn btn-primary btn-lg" type="submit" value="Publicar"  style="margin-block:50px;">
+</form>
+
+{% endblock content %}
